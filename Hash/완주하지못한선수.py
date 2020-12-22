@@ -1,6 +1,5 @@
 import collections
 
-
 def solution(participant, completion):
     total = collections.Counter()
     total.update(participant)
