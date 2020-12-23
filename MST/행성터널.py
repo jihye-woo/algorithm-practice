@@ -1,7 +1,6 @@
 import heapq
 from sys import stdin
 
-
 def solution_BJ2887():
     n = int(stdin.readline())
     x, y, z = [], [], []
@@ -22,11 +21,10 @@ def solution_BJ2887():
     make_edges(edge_heap, z)
 
     while num_of_edge < n - 1:
-        weight = get_next_edge(edge_heap, parent, rank)
-        if weight != 0:
-            total_value += weight
+        edge = heapq.heappop(edge_heap)
+        if get_next_edge(edge, parent, rank):
             num_of_edge += 1
-    print(total_value)
+            total_value += edge[0]
 
     return total_value
 
@@ -39,17 +37,13 @@ def make_edges(edge_heap, group):
         heapq.heappush(edge_heap, (abs(prev_val - next_val), prev_idx, next_idx))
         prev = next
 
-def get_next_edge(edge_heap, parent, rank):
-    edge = heapq.heappop(edge_heap)
+def get_next_edge(edge, parent, rank):
     weight, node1, node2 = edge
-    if node1 > node2:
-        node1, node2 = node2, node1
 
     if find(parent, node1) != find(parent, node2):
         union(rank, parent, node1, node2)
         return True
-    else:
-        return False
+    return False
 
 def find(parent, node):
     if parent[node] != node:
@@ -66,7 +60,6 @@ def union(rank, parent, node1, node2):
         parent[root1] = root2
         if rank[root1] == rank[root2]:
             rank[root2] += 1
-
 
 if __name__ == '__main__':
     solution_BJ2887()
