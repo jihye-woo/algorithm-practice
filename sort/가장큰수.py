@@ -1,44 +1,19 @@
-from collections import deque
+from functools import cmp_to_key
 def solution(numbers):
     answer = ''
     numbers = [str(num) for num in numbers]
-    numbers = reversed_sort(numbers)
+    numbers.sort(key = cmp_to_key(compare))
 
     for num in numbers:
         answer += num
-    return answer
 
-def reversed_sort(numbers):
-    sorted_list = deque([])
-    for num in numbers:
-        if not sorted_list: sorted_list.append(num)
-        else: insert_num(num, sorted_list)
-    return sorted_list
+    return str(int(answer))
 
-def insert_num(num, sorted_list):
-    insert_here = False
-    for idx in range(len(sorted_list)):
-        target = sorted_list[idx]
-        if need_to_check(target, num):
-            insert_here = is_larger(target, num)
-        else: insert_here = target < num
-
-        if insert_here:
-            sorted_list.insert(idx, num)
-            return
-
-    sorted_list.append(num)
-    return
-
-
-def need_to_check(target, num):
-    return target[0] == num[0] and len(target) != len(num)
-
-def is_larger(target, num):
-    len_diff = len(target) - len(num)
-    if len_diff < 0:
-        return target + (target[0] * -len_diff) < num
-    else: return target < num + (num[0] * len_diff)
-
-
-print(solution(	[3, 30, 34, 5, 9]))
+def compare(item1, item2):
+    new_str1 = item1 + item2
+    new_str2 = item2 + item1
+    if new_str1 > new_str2:
+        return -1
+    elif new_str1 < new_str2:
+        return 1
+    else: return 0
