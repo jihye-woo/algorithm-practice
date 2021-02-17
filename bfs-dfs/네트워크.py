@@ -1,25 +1,25 @@
-from collections import deque
 def solution(n, computers):
     global visited
     visited = set()
-    bfs(n, computers)
-    return n - len(visited) + 1
+    return dfs(n, computers)
 
-def bfs(n, computers):
-    queue = deque([0])
+def dfs(n, computers):
+    counter = 1
+    stack = [0]
     total = {i for i in range(1, n)}
     rest = total - set()
     while rest:
-        while queue:
-            target = queue.popleft()
+        while stack:
+            target = stack.pop()
             visited.add(target)
             for i in range(n):
                 if computers[target][i] and i not in visited:
-                    queue.append(i)
+                    stack.append(i)
 
         rest = total - visited
         if rest:
-            queue.append(rest.pop())
+            stack.append(rest.pop())
+            counter += 1
         else: break
+    return counter
 
-print(solution(3, [[1, 1, 0], [1, 1, 1], [0, 1, 1]]))
