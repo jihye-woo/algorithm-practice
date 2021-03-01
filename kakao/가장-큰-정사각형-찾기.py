@@ -1,30 +1,19 @@
 def solution(board):
-    global ROW
-    global COL
-    COL = len(board)
-    ROW = len(board[0])
+    ROW = len(board)
+    COL = len(board[0])
+    max_n = 0
 
-    max_n = 1
-    for x in range(ROW):
-        for y in range(COL):
-            if board[y][x] == 1:
-                n = square(x, y, board)
-                max_n = max(n, max_n)
+    if ROW == 1:
+        return 1 if 1 in board[0] else 0
+    if COL == 1:
+        return 1 if [1] in board else 0
 
+    for x in range(1, ROW):
+        for y in range(1, COL):
+            if board[x][y] == 1:
+                board[x][y] = n = dp(x, y, board)
+                max_n = max(max_n, n)
     return max_n * max_n
 
-
-def square(x, y, board):
-    n = 1
-    while x + n < ROW and y + n < COL:
-        if board[y][x + n] == 0:
-            break
-        if board[y + n][x] == 0:
-            break
-        if board[y + n][x + n] == 0:
-            break
-        n += 1
-    return n
-
-
-print(solution([[0, 0, 1, 1], [1, 1, 1, 1]]))
+def dp(x, y, board):
+    return min(board[x - 1][y], board[x][y - 1], board[x - 1][y - 1]) + 1
