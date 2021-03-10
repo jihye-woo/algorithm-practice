@@ -19,12 +19,14 @@ def solution(n, edge):
 
     while queue:
         node, level = queue.popleft()
+        print('node, level ', node, level)
         for neighbor in graph[node]:
             if neighbor not in visited:
                 queue.append((neighbor, level + 1))
                 visited.add(neighbor)
                 answer[level + 1] += 1
                 farthest = level + 1
+        print('queue ', queue)
 
     return answer[farthest]
 
